@@ -1,4 +1,4 @@
-from typing import Generator, List
+from typing import Generator, List, Optional
 from fastapi import Depends, HTTPException, status
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
@@ -10,12 +10,12 @@ from app.core.security import ALGORITHM
 
 
 class TokenData(BaseModel):
-    user_id: int | None = None
+    user_id: Optional[int] = None
 
 
 def get_current_user(
     db: Session = Depends(get_db),
-    authorization: str | None = None
+    authorization: Optional[str] = None
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

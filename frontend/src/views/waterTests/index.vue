@@ -237,7 +237,8 @@ import {
   getTestBatches, getTestBatch, createTestBatch, addTestItem,
   getTestItems, deleteTestBatch, deleteTestItem
 } from '../../api/waterTests'
-import { getWells, getWaterQualityStandards } from '../../api/masterData'
+import { getWells } from '../../api/wells'
+import { getWaterQualityStandards } from '../../api/masterData'
 import dayjs from 'dayjs'
 
 const userStore = useUserStore()
