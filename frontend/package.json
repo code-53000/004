@@ -1,0 +1,24 @@
+{
+  "name": "well-management-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 3000",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 3000"
+  },
+  "dependencies": {
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6",
+    "pinia": "^2.0.35",
+    "element-plus": "^2.3.4",
+    "@element-plus/icons-vue": "^2.1.0",
+    "axios": "^1.4.0",
+    "dayjs": "^1.11.7",
+    "echarts": "^5.4.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.1",
+    "vite": "^4.3.4"
+  }
+}
