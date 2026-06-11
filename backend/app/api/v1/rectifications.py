@@ -7,13 +7,13 @@ from app.models.user import User
 from app.models.well import Well
 from app.models.inspection_record import InspectionRecord
 from app.models.rectification_record import RectificationRecord
-from app.schemas.rectification_record import RectificationRecordCreate, RectificationRecordUpdate, RectificationRecord
+from app.schemas.rectification_record import RectificationRecordCreate, RectificationRecordUpdate, RectificationRecord as RectificationRecordSchema
 from app.schemas.common import PageResponse
 
 router = APIRouter()
 
 
-@router.get("", response_model=PageResponse[RectificationRecord])
+@router.get("", response_model=PageResponse[RectificationRecordSchema])
 def list_rectifications(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
@@ -62,7 +62,7 @@ def list_rectifications(
         record_dict["inspection_date"] = inspection_date
         record_dict["well_code"] = well_code
         record_dict["well_location"] = well_location
-        result.append(RectificationRecord(**record_dict))
+        result.append(RectificationRecordSchema(**record_dict))
 
     return PageResponse(
         items=result,
@@ -73,7 +73,7 @@ def list_rectifications(
     )
 
 
-@router.get("/{record_id}", response_model=RectificationRecord)
+@router.get("/{record_id}", response_model=RectificationRecordSchema)
 def get_rectification(
     record_id: int,
     db: Session = Depends(get_db),
@@ -99,10 +99,10 @@ def get_rectification(
     record_dict["inspection_date"] = inspection_date
     record_dict["well_code"] = well_code
     record_dict["well_location"] = well_location
-    return RectificationRecord(**record_dict)
+    return RectificationRecordSchema(**record_dict)
 
 
-@router.post("", response_model=RectificationRecord)
+@router.post("", response_model=RectificationRecordSchema)
 def create_rectification(
     record_in: RectificationRecordCreate,
     db: Session = Depends(get_db),
@@ -139,10 +139,10 @@ def create_rectification(
     record_dict["inspection_date"] = inspection_date
     record_dict["well_code"] = well_code
     record_dict["well_location"] = well_location
-    return RectificationRecord(**record_dict)
+    return RectificationRecordSchema(**record_dict)
 
 
-@router.put("/{record_id}", response_model=RectificationRecord)
+@router.put("/{record_id}", response_model=RectificationRecordSchema)
 def update_rectification(
     record_id: int,
     record_in: RectificationRecordUpdate,
@@ -188,7 +188,7 @@ def update_rectification(
     record_dict["inspection_date"] = inspection_date
     record_dict["well_code"] = well_code
     record_dict["well_location"] = well_location
-    return RectificationRecord(**record_dict)
+    return RectificationRecordSchema(**record_dict)
 
 
 @router.delete("/{record_id}")

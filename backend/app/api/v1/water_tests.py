@@ -8,14 +8,14 @@ from app.models.water_test_batch import WaterTestBatch
 from app.models.water_test_item import WaterTestItem
 from app.models.water_quality_standard import WaterQualityStandard
 from app.core.water_quality_judge import judge_water_quality, calculate_overall_result
-from app.schemas.water_test_batch import WaterTestBatchCreate, WaterTestBatch, WaterTestBatchWithItems
-from app.schemas.water_test_item import WaterTestItemCreate, WaterTestItem
+from app.schemas.water_test_batch import WaterTestBatchCreate, WaterTestBatch as WaterTestBatchSchema, WaterTestBatchWithItems
+from app.schemas.water_test_item import WaterTestItemCreate, WaterTestItem as WaterTestItemSchema
 from app.schemas.common import PageResponse
 
 router = APIRouter()
 
 
-@router.get("/batches", response_model=PageResponse[WaterTestBatch])
+@router.get("/batches", response_model=PageResponse[WaterTestBatchSchema])
 def list_test_batches(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
@@ -51,7 +51,7 @@ def list_test_batches(
     for batch, tester_name in items:
         batch_dict = batch.__dict__.copy()
         batch_dict["tester_name"] = tester_name
-        result.append(WaterTestBatch(**batch_dict))
+        result.append(WaterTestBatchSchema(**batch_dict))
 
     return PageResponse(
         items=result,
@@ -103,7 +103,7 @@ def get_test_batch(
         item_dict["comparison_type"] = comparison_type
         item_dict["well_code"] = well_code
         item_dict["well_location"] = well_location
-        test_items.append(WaterTestItem(**item_dict))
+        test_items.append(WaterTestItemSchema(**item_dict))
 
     batch_dict = batch.__dict__.copy()
     batch_dict["tester_name"] = tester_name
@@ -112,7 +112,7 @@ def get_test_batch(
     return WaterTestBatchWithItems(**batch_dict)
 
 
-@router.post("/batches", response_model=WaterTestBatch)
+@router.post("/batches", response_model=WaterTestBatchSchema)
 def create_test_batch(
     batch_in: WaterTestBatchCreate,
     db: Session = Depends(get_db),
@@ -134,10 +134,10 @@ def create_test_batch(
 
     batch_dict = batch.__dict__.copy()
     batch_dict["tester_name"] = current_user.full_name
-    return WaterTestBatch(**batch_dict)
+    return WaterTestBatchSchema(**batch_dict)
 
 
-@router.post("/batches/{batch_id}/items", response_model=WaterTestItem)
+@router.post("/batches/{batch_id}/items", response_model=WaterTestItemSchema)
 def add_test_item(
     batch_id: int,
     item_in: WaterTestItemCreate,
@@ -185,10 +185,10 @@ def add_test_item(
     item_dict["well_code"] = well.well_code
     item_dict["well_location"] = well.location
 
-    return WaterTestItem(**item_dict)
+    return WaterTestItemSchema(**item_dict)
 
 
-@router.get("/items", response_model=PageResponse[WaterTestItem])
+@router.get("/items", response_model=PageResponse[WaterTestItemSchema])
 def list_test_items(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
@@ -247,7 +247,7 @@ def list_test_items(
         item_dict["comparison_type"] = comparison_type
         item_dict["well_code"] = well_code
         item_dict["well_location"] = well_location
-        result.append(WaterTestItem(**item_dict))
+        result.append(WaterTestItemSchema(**item_dict))
 
     return PageResponse(
         items=result,

@@ -8,13 +8,13 @@ from app.models.well import Well
 from app.models.inspection_record import InspectionRecord
 from app.core.water_quality_judge import judge_residual_chlorine
 from app.api.v1.wells import update_overdue_status
-from app.schemas.inspection_record import InspectionRecordCreate, InspectionRecordUpdate, InspectionRecord
+from app.schemas.inspection_record import InspectionRecordCreate, InspectionRecordUpdate, InspectionRecord as InspectionRecordSchema
 from app.schemas.common import PageResponse
 
 router = APIRouter()
 
 
-@router.get("", response_model=PageResponse[InspectionRecord])
+@router.get("", response_model=PageResponse[InspectionRecordSchema])
 def list_inspections(
     page: int = Query(1, ge=1),
     page_size: int = Query(10, ge=1, le=100),
@@ -64,7 +64,7 @@ def list_inspections(
         record_dict["inspector_name"] = inspector_name
         record_dict["well_code"] = well_code
         record_dict["well_location"] = well_location
-        result.append(InspectionRecord(**record_dict))
+        result.append(InspectionRecordSchema(**record_dict))
 
     return PageResponse(
         items=result,
@@ -75,7 +75,7 @@ def list_inspections(
     )
 
 
-@router.get("/{record_id}", response_model=InspectionRecord)
+@router.get("/{record_id}", response_model=InspectionRecordSchema)
 def get_inspection(
     record_id: int,
     db: Session = Depends(get_db),
@@ -98,10 +98,10 @@ def get_inspection(
     record_dict["inspector_name"] = inspector_name
     record_dict["well_code"] = well_code
     record_dict["well_location"] = well_location
-    return InspectionRecord(**record_dict)
+    return InspectionRecordSchema(**record_dict)
 
 
-@router.post("", response_model=InspectionRecord)
+@router.post("", response_model=InspectionRecordSchema)
 def create_inspection(
     record_in: InspectionRecordCreate,
     db: Session = Depends(get_db),
@@ -155,10 +155,10 @@ def create_inspection(
     record_dict["inspector_name"] = inspector_name
     record_dict["well_code"] = well_code
     record_dict["well_location"] = well_location
-    return InspectionRecord(**record_dict)
+    return InspectionRecordSchema(**record_dict)
 
 
-@router.put("/{record_id}", response_model=InspectionRecord)
+@router.put("/{record_id}", response_model=InspectionRecordSchema)
 def update_inspection(
     record_id: int,
     record_in: InspectionRecordUpdate,
@@ -203,7 +203,7 @@ def update_inspection(
     record_dict["inspector_name"] = inspector_name
     record_dict["well_code"] = well_code
     record_dict["well_location"] = well_location
-    return InspectionRecord(**record_dict)
+    return InspectionRecordSchema(**record_dict)
 
 
 @router.delete("/{record_id}")

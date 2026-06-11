@@ -1,5 +1,5 @@
 from typing import Generator, List, Optional
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Header
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -15,7 +15,7 @@ class TokenData(BaseModel):
 
 def get_current_user(
     db: Session = Depends(get_db),
-    authorization: Optional[str] = None
+    authorization: Optional[str] = Header(None)
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
