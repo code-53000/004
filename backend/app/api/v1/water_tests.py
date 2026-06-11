@@ -18,7 +18,7 @@ router = APIRouter()
 @router.get("/batches", response_model=PageResponse[WaterTestBatchSchema])
 def list_test_batches(
     page: int = Query(1, ge=1),
-    page_size: int = Query(10, ge=1, le=100),
+    page_size: int = Query(10, ge=1, le=1000),
     keyword: str = Query(None),
     overall_result: str = Query(None),
     db: Session = Depends(get_db),
@@ -191,7 +191,7 @@ def add_test_item(
 @router.get("/items", response_model=PageResponse[WaterTestItemSchema])
 def list_test_items(
     page: int = Query(1, ge=1),
-    page_size: int = Query(10, ge=1, le=100),
+    page_size: int = Query(10, ge=1, le=1000),
     keyword: str = Query(None),
     well_id: int = Query(None),
     standard_id: int = Query(None),

@@ -16,7 +16,7 @@ router = APIRouter()
 @router.get("", response_model=PageResponse[RectificationRecordSchema])
 def list_rectifications(
     page: int = Query(1, ge=1),
-    page_size: int = Query(10, ge=1, le=100),
+    page_size: int = Query(10, ge=1, le=1000),
     keyword: str = Query(None),
     inspection_id: int = Query(None),
     status: str = Query(None),

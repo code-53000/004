@@ -6,14 +6,14 @@ from app.models.user import User
 from app.models.village import Village
 from app.models.well_type import WellType
 from app.models.water_quality_standard import WaterQualityStandard
-from app.schemas.village import VillageCreate, Village
-from app.schemas.well_type import WellTypeCreate, WellType
-from app.schemas.water_quality_standard import WaterQualityStandardCreate, WaterQualityStandard
+from app.schemas.village import VillageCreate, Village as VillageSchema
+from app.schemas.well_type import WellTypeCreate, WellType as WellTypeSchema
+from app.schemas.water_quality_standard import WaterQualityStandardCreate, WaterQualityStandard as WaterQualityStandardSchema
 
 router = APIRouter()
 
 
-@router.get("/villages", response_model=List[Village])
+@router.get("/villages", response_model=List[VillageSchema])
 def list_villages(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -21,7 +21,7 @@ def list_villages(
     return db.query(Village).order_by(Village.code).all()
 
 
-@router.post("/villages", response_model=Village)
+@router.post("/villages", response_model=VillageSchema)
 def create_village(
     village_in: VillageCreate,
     db: Session = Depends(get_db),
@@ -40,7 +40,7 @@ def create_village(
     return village
 
 
-@router.put("/villages/{village_id}", response_model=Village)
+@router.put("/villages/{village_id}", response_model=VillageSchema)
 def update_village(
     village_id: int,
     village_in: VillageCreate,
@@ -83,7 +83,7 @@ def delete_village(
     return {"message": "删除成功"}
 
 
-@router.get("/well-types", response_model=List[WellType])
+@router.get("/well-types", response_model=List[WellTypeSchema])
 def list_well_types(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -91,7 +91,7 @@ def list_well_types(
     return db.query(WellType).order_by(WellType.name).all()
 
 
-@router.post("/well-types", response_model=WellType)
+@router.post("/well-types", response_model=WellTypeSchema)
 def create_well_type(
     well_type_in: WellTypeCreate,
     db: Session = Depends(get_db),
@@ -108,7 +108,7 @@ def create_well_type(
     return well_type
 
 
-@router.put("/well-types/{type_id}", response_model=WellType)
+@router.put("/well-types/{type_id}", response_model=WellTypeSchema)
 def update_well_type(
     type_id: int,
     well_type_in: WellTypeCreate,
@@ -150,7 +150,7 @@ def delete_well_type(
     return {"message": "删除成功"}
 
 
-@router.get("/water-quality-standards", response_model=List[WaterQualityStandard])
+@router.get("/water-quality-standards", response_model=List[WaterQualityStandardSchema])
 def list_water_quality_standards(
     category: str = None,
     db: Session = Depends(get_db),
@@ -162,7 +162,7 @@ def list_water_quality_standards(
     return query.order_by(WaterQualityStandard.priority, WaterQualityStandard.indicator_name).all()
 
 
-@router.post("/water-quality-standards", response_model=WaterQualityStandard)
+@router.post("/water-quality-standards", response_model=WaterQualityStandardSchema)
 def create_water_quality_standard(
     standard_in: WaterQualityStandardCreate,
     db: Session = Depends(get_db),
@@ -182,7 +182,7 @@ def create_water_quality_standard(
     return standard
 
 
-@router.put("/water-quality-standards/{standard_id}", response_model=WaterQualityStandard)
+@router.put("/water-quality-standards/{standard_id}", response_model=WaterQualityStandardSchema)
 def update_water_quality_standard(
     standard_id: int,
     standard_in: WaterQualityStandardCreate,
